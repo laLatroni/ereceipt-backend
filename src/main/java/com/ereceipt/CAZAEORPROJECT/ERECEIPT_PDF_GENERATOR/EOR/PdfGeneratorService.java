@@ -20,7 +20,7 @@ import java.util.Date;
 public class PdfGeneratorService {
     public void generateSavePdf(TRANSACTION transaction, ByteArrayOutputStream pdfBytes) throws IOException, DocumentException {
 
-        String outputFolderPath = "C:\\Users\\63975\\OneDrive - CAZA TECHNOLOGY SOLUTIONS INC\\Desktop\\GeneratedP";
+        String outputFolderPath = "C:\\GeneratedPDF";
         Path outputFolder = Paths.get(outputFolderPath);
         if (!Files.exists(outputFolder)) {
             Files.createDirectories(outputFolder);

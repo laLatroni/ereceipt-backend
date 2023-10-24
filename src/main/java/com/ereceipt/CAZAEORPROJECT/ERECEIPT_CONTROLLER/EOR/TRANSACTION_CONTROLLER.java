@@ -27,16 +27,12 @@ public class TRANSACTION_CONTROLLER {
     }
 
     @PostMapping(value = "/transactions")
-    public ResponseEntity<String> add(@RequestBody TRANSACTION transaction) throws IOException {
-        try {
-            TRANSACTION addTransaction = service.add(transaction);
-            ByteArrayOutputStream pdfBytes = pdfGeneratorService.generatePdf(transaction);
-            pdfGeneratorService.generateSavePdf(transaction, pdfBytes);
-            return ResponseEntity.status(HttpStatus.OK).body("DATA ADDED" + "\n" + service.add(transaction));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("NOT FOUND" + e.getMessage());
-        }
+    public TRANSACTION sample(@RequestBody TRANSACTION transaction) throws IOException {
 
+            TRANSACTION addTran= service.add(transaction);
+            ByteArrayOutputStream pdfBytes1 = pdfGeneratorService.generatePdf(transaction);
+            pdfGeneratorService.generateSavePdf(transaction, pdfBytes1);
+            return this.service.add(transaction);
     }
     @PostMapping(value = "transactions/send-email")
     // POST (SAVE) THEN GENERATE PDF THEN AND SEND TO EMAIL IF THE EMAIL IS EXISTING ENDPOINT
