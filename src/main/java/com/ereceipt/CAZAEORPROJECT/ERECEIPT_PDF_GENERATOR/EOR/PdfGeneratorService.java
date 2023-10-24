@@ -26,7 +26,7 @@ public class PdfGeneratorService {
             Files.createDirectories(outputFolder);
         }
         //DATE AND TIME INCLUDING MINUTES AND SECONDS PARA MAGING UNIQUE YUNG ID
-        DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
         String currentDateTime = dateFormatter.format(new Date());
         String fileName = "EWB-" + transaction.getCustomer_no() + "-" + currentDateTime + ".pdf";
         String filePath = outputFolderPath + File.separator + fileName;
