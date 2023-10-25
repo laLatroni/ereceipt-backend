@@ -1,8 +1,7 @@
 package com.ereceipt.CAZAEORPROJECT.ERECEIPT_EMAIL_IMPLEMENTATION.EOR;
 
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR.EMAIL_SERVICE;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +9,9 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor

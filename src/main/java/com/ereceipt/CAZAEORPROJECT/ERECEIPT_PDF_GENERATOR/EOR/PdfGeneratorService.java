@@ -20,13 +20,13 @@ import java.util.Date;
 public class PdfGeneratorService {
     public void generateSavePdf(TRANSACTION transaction, ByteArrayOutputStream pdfBytes) throws IOException, DocumentException {
 
-        String outputFolderPath = "C:\\GeneratedPDF";
+        String outputFolderPath = "C:\\CAZA\\GeneratedPDF";
         Path outputFolder = Paths.get(outputFolderPath);
         if (!Files.exists(outputFolder)) {
             Files.createDirectories(outputFolder);
         }
         //DATE AND TIME INCLUDING MINUTES AND SECONDS PARA MAGING UNIQUE YUNG ID
-        DateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHss");
         String currentDateTime = dateFormatter.format(new Date());
         String fileName = "EWB-" + transaction.getCustomer_no() + "-" + currentDateTime + ".pdf";
         String filePath = outputFolderPath + File.separator + fileName;
