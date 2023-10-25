@@ -24,7 +24,7 @@ public class TRANSACTION {
     private Integer id;
 
 
-    private String or_numbers;
+    private String or_number;
     private String names;
     private String cus_email;
     private String dates;
