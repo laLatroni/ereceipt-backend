@@ -22,8 +22,6 @@ public class TRANSACTION {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-
     private String or_number;
     private String names;
     private String cus_email;
