@@ -2,6 +2,8 @@ package com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR;
 
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION_REPOSITORY;
+import com.ereceipt.CAZAEORPROJECT.GlobalException.UserNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,8 +13,8 @@ import java.util.Optional;
 
 @Service
 public class TRANSACTION_SERVICE {
-    TRANSACTION_REPOSITORY transRepository;
-
+    private final TRANSACTION_REPOSITORY transRepository;
+@Autowired
     public TRANSACTION_SERVICE(TRANSACTION_REPOSITORY transRepository) {
         this.transRepository = transRepository;
     }
@@ -22,7 +24,9 @@ public class TRANSACTION_SERVICE {
     }
 
     public TRANSACTION getBYID(Integer id) {
-        return this.transRepository.findById(id).get();
+        return transRepository.findById(id)
+                .orElseThrow(() ->
+                        new UserNotFoundException("walang ganung id tropa"));
     }
 
     public TRANSACTION add(TRANSACTION transaction) {

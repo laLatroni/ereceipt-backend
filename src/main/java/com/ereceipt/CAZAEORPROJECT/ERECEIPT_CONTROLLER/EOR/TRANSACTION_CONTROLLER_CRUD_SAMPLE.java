@@ -1,6 +1,4 @@
 package com.ereceipt.CAZAEORPROJECT.ERECEIPT_CONTROLLER.EOR;
-
-
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR.TRANSACTION_SERVICE;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +11,11 @@ import java.util.List;
     @RequestMapping("/api/v1")
 public class TRANSACTION_CONTROLLER_CRUD_SAMPLE {
 
-    TRANSACTION_SERVICE transactionService;
+    private final TRANSACTION_SERVICE transactionService;
 
 @Autowired
     public TRANSACTION_CONTROLLER_CRUD_SAMPLE(TRANSACTION_SERVICE transactionService){
-    this.transactionService = transactionService;
+        this.transactionService = transactionService;
 
     }
     @GetMapping("/transactions/sample")

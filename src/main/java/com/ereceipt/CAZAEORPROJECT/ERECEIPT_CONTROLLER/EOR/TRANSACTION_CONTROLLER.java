@@ -28,7 +28,6 @@ public class TRANSACTION_CONTROLLER {
 
     @PostMapping(value = "/transactions")
     public TRANSACTION sample(@RequestBody TRANSACTION transaction) throws IOException {
-
             TRANSACTION addTran= service.add(transaction);
             ByteArrayOutputStream pdfBytes1 = pdfGeneratorService.generatePdf(transaction);
             pdfGeneratorService.generateSavePdf(transaction, pdfBytes1);
@@ -81,7 +80,7 @@ public class TRANSACTION_CONTROLLER {
                     + "\n"
                     + service.getBYID(id.getId()));
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage() );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

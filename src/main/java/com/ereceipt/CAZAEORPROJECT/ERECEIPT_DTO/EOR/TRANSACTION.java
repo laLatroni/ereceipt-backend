@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import org.hibernate.annotations.NaturalId;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -24,10 +25,12 @@ public class TRANSACTION {
     private Integer id;
     private String or_number;
     private String names;
+    @NaturalId
     private String cus_email;
     private String dates;
     private String mode_payment;
     private String amount;
+    @NaturalId
     private String customer_no;
     private String time_Stamp;
 
