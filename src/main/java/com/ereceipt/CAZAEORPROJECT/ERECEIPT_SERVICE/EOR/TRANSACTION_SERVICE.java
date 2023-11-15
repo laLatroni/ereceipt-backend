@@ -1,8 +1,8 @@
 package com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR;
 
-import com.ereceipt.CAZAEORPROJECT.CUSTOMER_TABLE.EOR.CUST_DETAILS_REPOSITORY;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION_REPOSITORY;
+import com.ereceipt.CAZAEORPROJECT.GlobalException.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,10 @@ import java.util.Optional;
 @Service
 public class TRANSACTION_SERVICE {
     private final TRANSACTION_REPOSITORY transRepository;
-    private final CUST_DETAILS_REPOSITORY custDetailsRepository;
 @Autowired
-    public TRANSACTION_SERVICE(TRANSACTION_REPOSITORY transRepository, CUST_DETAILS_REPOSITORY custDetailsRepository) {
+    public TRANSACTION_SERVICE(TRANSACTION_REPOSITORY transRepository) {
         this.transRepository = transRepository;
-    this.custDetailsRepository = custDetailsRepository;
-}
+    }
 
     public List<TRANSACTION> getAll() {
         return this.transRepository.findAll();
@@ -28,11 +26,10 @@ public class TRANSACTION_SERVICE {
     public TRANSACTION getBYID(Integer id) {
         return transRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(" "));
+                        new UserNotFoundException("walang ganung id tropa"));
     }
 
     public TRANSACTION add(TRANSACTION transaction) {
-
         return this.transRepository.save(transaction);
     }
 
@@ -46,7 +43,7 @@ public class TRANSACTION_SERVICE {
             transaction.setCus_email(updateTransaction.getCus_email());
             transaction.setDates(updateTransaction.getDates());
             transaction.setAmount(updateTransaction.getAmount());
-            transaction.setCusNo(updateTransaction.getCusNo());
+            transaction.setCustomer_no(updateTransaction.getCustomer_no());
 
             TRANSACTION updated = this.transRepository.save(transaction);
             return ResponseEntity.ok("ID" + id + "UPDATED SUCCESFULLY");
