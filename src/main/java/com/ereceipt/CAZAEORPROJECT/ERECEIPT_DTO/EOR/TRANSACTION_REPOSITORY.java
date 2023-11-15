@@ -4,4 +4,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TRANSACTION_REPOSITORY extends JpaRepository<TRANSACTION, Integer> {
+
+
 }
