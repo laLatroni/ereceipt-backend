@@ -36,6 +36,7 @@ public class TRANSACTION {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Timestamp time_Stamp;
 =======
     private String time_Stamp;
@@ -46,6 +47,10 @@ public class TRANSACTION {
     private String time_Stamp;
 
 
+=======
+    private String time_Stamp;
+
+>>>>>>> parent of 67ddd41 (Revert "Revert "test"")
     }
 
 
