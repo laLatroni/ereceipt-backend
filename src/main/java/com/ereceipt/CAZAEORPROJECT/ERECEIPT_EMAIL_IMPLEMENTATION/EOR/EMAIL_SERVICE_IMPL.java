@@ -26,7 +26,7 @@ public class EMAIL_SERVICE_IMPL implements EMAIL_SERVICE{
     @Autowired
     private final JavaMailSender emailSender;
 
-    @Override
+
     public void sendEmailAttachmentMessage(String name, String to, String body)throws MessagingException {
 
     }
