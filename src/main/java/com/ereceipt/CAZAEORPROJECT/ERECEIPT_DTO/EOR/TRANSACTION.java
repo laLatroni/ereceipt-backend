@@ -34,7 +34,11 @@ public class TRANSACTION {
     @NaturalId
     private String customer_no;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Timestamp time_Stamp;
+=======
+    private String time_Stamp;
+>>>>>>> parent of 67ddd41 (Revert "Revert "test"")
 =======
     private String time_Stamp;
 >>>>>>> parent of 67ddd41 (Revert "Revert "test"")
