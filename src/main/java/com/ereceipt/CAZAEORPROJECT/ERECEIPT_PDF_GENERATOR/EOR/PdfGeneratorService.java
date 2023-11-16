@@ -28,7 +28,7 @@ public class PdfGeneratorService {
         //DATE AND TIME INCLUDING MINUTES AND SECONDS PARA MAGING UNIQUE YUNG ID
         DateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHss");
         String currentDateTime = dateFormatter.format(new Date());
-        String fileName = "EWB-" + transaction.getCusNo() + "-" + currentDateTime + ".pdf";
+        String fileName = "EWB-" + transaction.getCustomer_no() + "-" + currentDateTime + ".pdf";
         String filePath = outputFolderPath + File.separator + fileName;
         ByteArrayOutputStream byteArrayOutputStream = generatePdf(transaction);
         FileOutputStream fileOutputStream = new FileOutputStream(filePath);
@@ -58,7 +58,7 @@ public class PdfGeneratorService {
                 new Paragraph("Received From: " + transaction.getNames(), fontParagraphlow),
                 new Paragraph("Date: " + transaction.getDates(), fontParagraphlow),
                 new Paragraph("Recieve Amount: " + transaction.getAmount(), fontParagraphlow),
-                new Paragraph("Mode of Payment: " + transaction.getModePayment(), fontParagraphlow)
+                new Paragraph("Mode of Payment: " + transaction.getMode_payment(), fontParagraphlow)
         };
 
         paragraphs[0].setAlignment(Element.ALIGN_CENTER);
