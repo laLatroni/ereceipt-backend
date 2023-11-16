@@ -35,6 +35,7 @@ public class TRANSACTION {
     private String dates;
     private Integer modePayment;
     private String amount;
+
     private Integer cusNo;
     @Temporal(TemporalType.DATE)
     private Date time_Stamp;
