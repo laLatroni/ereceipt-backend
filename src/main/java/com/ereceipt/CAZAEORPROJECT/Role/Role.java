@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @NaturalId
     private String name;
 

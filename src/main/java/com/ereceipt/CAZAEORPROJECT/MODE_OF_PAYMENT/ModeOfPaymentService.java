@@ -21,10 +21,8 @@ public class ModeOfPaymentService implements ModeOfPaymentImp {
         }
         return this.modeOfPaymentRepo.save(modeOfPayment);
     }
-
     public boolean ExistingBaYungMethod(Integer modePayment) {
         return modeOfPaymentRepo.findByModePayment(modePayment).isPresent();
-
     }
     public ModeOfPayment getUser(Integer modePayment) {
         return modeOfPaymentRepo.findByModePayment(modePayment).get();

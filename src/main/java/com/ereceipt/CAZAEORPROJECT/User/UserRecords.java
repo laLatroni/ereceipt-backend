@@ -5,14 +5,14 @@ import com.ereceipt.CAZAEORPROJECT.Role.Role;
 import java.util.Set;
 
 public class UserRecords {
-    private Long id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
     private String roleofUser;
     private Set<Role> roles;
 
-    public UserRecords(Long id, String firstName, String lastName, String email, Set<Role> roles) {
+    public UserRecords(Integer id, String firstName, String lastName, String email, Set<Role> roles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,7 +21,7 @@ public class UserRecords {
 //        this.roleofUser =roleofUser;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

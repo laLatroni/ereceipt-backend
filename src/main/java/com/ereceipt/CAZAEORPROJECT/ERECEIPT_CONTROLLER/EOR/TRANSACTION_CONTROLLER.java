@@ -7,7 +7,6 @@ import com.ereceipt.CAZAEORPROJECT.ERECEIPT_PDF_GENERATOR.EOR.PdfGeneratorServic
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR.TRANSACTION_SERVICE;
 import com.ereceipt.CAZAEORPROJECT.MODE_OF_PAYMENT.ModeOfPayment;
 import com.ereceipt.CAZAEORPROJECT.MODE_OF_PAYMENT.ModeOfPaymentService;
-import com.ereceipt.CAZAEORPROJECT.User.User;
 import com.ereceipt.CAZAEORPROJECT.exception.UserAlreadyExistsException;
 import com.ereceipt.CAZAEORPROJECT.exception.UserNotFoundException;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
@@ -15,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/eor")
@@ -54,7 +51,7 @@ public class TRANSACTION_CONTROLLER {
         ByteArrayOutputStream pdfBytes = pdfGeneratorService.generatePdf(transaction);
         pdfGeneratorService.generateSavePdf(transaction, pdfBytes);
         try {
-            String recipientEmail = addTransaction.getCus_email(); // VARIABLE FOR THE EMAIL
+            String recipientEmail = addTransaction.getEmail(); // VARIABLE FOR THE EMAIL
             if (recipientEmail != null && !recipientEmail.isEmpty()) {
                 String subject = "NEW EMAIL";
                 String body = "Dear " + transaction.getNames()
@@ -97,28 +94,51 @@ public class TRANSACTION_CONTROLLER {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-
     }
 
     @PostMapping("/addTransactions")
-    public TRANSACTION addsTransaction(@RequestBody TRANSACTION transaction) throws IOException {
-        if(modeOfPaymentService.ExistingBaYungMethod(transaction.getModePayment())) {
+    public ResponseEntity<TRANSACTION> addsTransaction(@RequestBody TRANSACTION transaction) throws IOException {
+
+        if (modeOfPaymentService.ExistingBaYungMethod(transaction.getModePayment())) {
             ModeOfPayment payment = modeOfPaymentService.getUser(transaction.getModePayment());
             transaction.setPayment(payment);
-        }else {
+        } else {
             throw new UserAlreadyExistsException("PAYMENT METHOD " + transaction.getModePayment() + " DOESNT EXIST");
         }
-            if (custDetailsService.isCustomerExisting(transaction.getCusNo())){
-                CUST_RECORDS customer = custDetailsService.getUser(transaction.getCusNo());
-                transaction.setCustomer(customer);
-            }else {
-                throw new UserNotFoundException("CUSTOMER  " + transaction.getCusNo() + " DOESNT EXIST");
-            }
-                ByteArrayOutputStream pdfBytes1 = pdfGeneratorService.generatePdf(transaction);
-                pdfGeneratorService.generateSavePdf(transaction, pdfBytes1);
-                return service.add(transaction);
-            }
+        if (custDetailsService.isCustomerExisting(transaction.getCusNo())) {
+            CUST_RECORDS customer = custDetailsService.getUser(transaction.getCusNo());
+            transaction.setCustomer(customer);
+        } else {
+            throw new UserNotFoundException("CUSTOMER  " + transaction.getCusNo() + " DOESNT EXIST");
         }
+
+        TRANSACTION adds = service.add(transaction);
+        ByteArrayOutputStream pdfBytes1 = pdfGeneratorService.generatePdf(transaction);
+        pdfGeneratorService.generateSavePdf(transaction, pdfBytes1);
+        String recipientEmail = adds.getEmail();
+        if (recipientEmail != null && !recipientEmail.isEmpty()) {
+            String subject = "NEW EMAIL";
+            String body = "Dear " + transaction.getNames()
+                    + ",\n"
+                    + "This confirms that your Debit to account transaction is succesfull.\n"
+                    + "Details are as follows:\n" + "OR no. :"
+                    + transaction.getOr_number() + "\n" + "Date and Time: "
+                    + transaction.getDates() + "\n" + "Mode of Payment: "
+                    + transaction.getModePayment() + "\n" + "Amount: "
+                    + transaction.getAmount() + "\n"
+                    + "Below is the attached receipt of the transaction. Thankyou!";
+            emailServiceImpl.sendEmailAttachmentMessage(recipientEmail, subject, body, pdfBytes1.toByteArray(), "Transaction.pdf");
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.add(transaction));
+        }
+            return ResponseEntity.ok().body(service.add(transaction));
+    }
+}
+
+
+
+
+
+
 
 
 

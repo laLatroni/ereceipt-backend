@@ -1,5 +1,6 @@
 package com.ereceipt.CAZAEORPROJECT.ERECEIPT_EMAIL_IMPLEMENTATION.EOR;
 
+import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR.EMAIL_SERVICE;
 
 import lombok.RequiredArgsConstructor;
@@ -48,4 +49,7 @@ public class EMAIL_SERVICE_IMPL implements EMAIL_SERVICE{
             throw new RuntimeException(exception.getMessage());
         }
     }
+
+//    public void sendEmailAttachmentMessage(TRANSACTION emailReciepient, String subject, String body, byte[] byteArray, String filename) {
+//    }
 }

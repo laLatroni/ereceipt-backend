@@ -3,6 +3,7 @@ package com.ereceipt.CAZAEORPROJECT.ERECEIPT_SERVICE.EOR;
 import com.ereceipt.CAZAEORPROJECT.CUSTOMER_TABLE.EOR.CUST_DETAILS_REPOSITORY;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION;
 import com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR.TRANSACTION_REPOSITORY;
+import com.ereceipt.CAZAEORPROJECT.MODE_OF_PAYMENT.ModeOfPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,12 @@ import java.util.Optional;
 public class TRANSACTION_SERVICE {
     private final TRANSACTION_REPOSITORY transRepository;
     private final CUST_DETAILS_REPOSITORY custDetailsRepository;
-@Autowired
+
+    @Autowired
     public TRANSACTION_SERVICE(TRANSACTION_REPOSITORY transRepository, CUST_DETAILS_REPOSITORY custDetailsRepository) {
         this.transRepository = transRepository;
-    this.custDetailsRepository = custDetailsRepository;
-}
+        this.custDetailsRepository = custDetailsRepository;
+    }
 
     public List<TRANSACTION> getAll() {
         return this.transRepository.findAll();
@@ -43,7 +45,7 @@ public class TRANSACTION_SERVICE {
 
             transaction.setOr_number(updateTransaction.getOr_number());
             transaction.setNames(updateTransaction.getNames());
-            transaction.setCus_email(updateTransaction.getCus_email());
+            transaction.setEmail(updateTransaction.getEmail());
             transaction.setDates(updateTransaction.getDates());
             transaction.setAmount(updateTransaction.getAmount());
             transaction.setCusNo(updateTransaction.getCusNo());
@@ -53,7 +55,15 @@ public class TRANSACTION_SERVICE {
         }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(""));
 
     }
-        public void delete (Integer id) {
-            this.transRepository.deleteById(id);
-        }
+
+    public void delete(Integer id) {
+        this.transRepository.deleteById(id);
+    }
+
+    public boolean isEmailExisting(String email) {
+        return transRepository.findByEmail(email).isPresent();
+    }
+    public TRANSACTION getUser(String email) {
+        return transRepository.findByEmail(email).get();
+    }
 }

@@ -27,7 +27,7 @@ public class ExceptionHandlers{
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String, String> userNotFound(UserNotFoundException ex){
         Map<String, String> error = new HashMap<>();
-        error.put("error", "BAD CREDENTIALS");
+        error.put("error", ex.getMessage());
         return error;
     }
 

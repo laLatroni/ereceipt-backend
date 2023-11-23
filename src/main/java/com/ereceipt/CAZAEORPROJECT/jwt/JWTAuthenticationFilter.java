@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ereceipt.CAZAEORPROJECT.Security.CazaEorUserDetails;
 import com.ereceipt.CAZAEORPROJECT.Security.CazaEorUserService;
+import com.ereceipt.CAZAEORPROJECT.Token.TokenRepo;
+import com.ereceipt.CAZAEORPROJECT.Token.Tokens;
 import lombok.var;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,21 +37,29 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
     private final CazaEorUserService cazaEorUserService;
+    private final TokenRepo tokenRepo;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException, ServletException {
 
-        String authHeader = request.getHeader("Authorization");
-        String token = null;
-        String userName = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")){
-            token = authHeader.substring(7);
-            userName = jwtService.extractUsernameFromToken(token);
+      final   String authHeader = request.getHeader("Authorization");
+      final   String jwt;
+      final   String userName;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request,response);
+            return;
+////            jwt = authHeader.substring(7);
+//            userName = jwtService.extractUsernameFromToken(jwt);
         }
+        jwt = authHeader.substring(7);
+        userName = jwtService.extractUsernameFromToken(jwt);
         if (userName != null & SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = cazaEorUserService.loadUserByUsername(userName);
-            if(jwtService.validateToken(token, userDetails)) {
+            UserDetails userDetails = this.cazaEorUserService.loadUserByUsername(userName);
+                var isTokenvalid = tokenRepo.findByToken(jwt)
+                        .map(tokens -> !tokens.isExpired() && !tokens.isRevoked())
+                        .orElse(false);
+            if(jwtService.validateToken(jwt, userDetails) && isTokenvalid) {
                 var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

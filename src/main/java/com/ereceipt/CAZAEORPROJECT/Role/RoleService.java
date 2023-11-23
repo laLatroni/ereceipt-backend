@@ -34,7 +34,7 @@ public class RoleService implements IRoleImplementation{
     }
 
     @Override
-    public void deleteRole(Long roleId) {
+    public void deleteRole(Integer roleId) {
         this.removeAllUserFromRole(roleId);
         roleRepository.deleteById(roleId);
     }
@@ -44,12 +44,12 @@ public class RoleService implements IRoleImplementation{
         return roleRepository.findByName(name).get();
     }
     @Override
-    public Role findById(Long roelId) {
+    public Role findById(Integer roelId) {
         return roleRepository.findById(roelId).get();
     }
 
     @Override
-    public User removeUserFromRole(Long userId, Long roleId) {
+    public User removeUserFromRole(Integer userId, Integer roleId) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Role> role = roleRepository.findById(roleId);
         if (role.isPresent() && role.get().getUsers().contains(user.get())) {
@@ -61,7 +61,7 @@ public class RoleService implements IRoleImplementation{
     }
 
     @Override
-    public User assignUerToRole(Long userId, Long roleId) {
+    public User assignUerToRole(Integer userId, Integer roleId) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Role> role = roleRepository.findById(roleId);
         if (user.isPresent() && user.get().getRoles().contains(role.get())){
@@ -74,7 +74,7 @@ public class RoleService implements IRoleImplementation{
     }
 
     @Override
-    public Role removeAllUserFromRole(Long roleId) {
+    public Role removeAllUserFromRole(Integer roleId) {
         Optional<Role> role = roleRepository.findById(roleId);
         role.ifPresent(Role::removeAllUsersFromRole);
         return roleRepository.save(role.get());

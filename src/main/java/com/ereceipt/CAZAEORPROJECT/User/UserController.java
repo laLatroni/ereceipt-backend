@@ -1,9 +1,9 @@
 package com.ereceipt.CAZAEORPROJECT.User;
 
 
+import com.ereceipt.CAZAEORPROJECT.Authentication.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class UserController {
 
     }
     @PostMapping("/user-register")
-    public ResponseEntity<User> add(@RequestBody User user){
+    public ResponseEntity<AuthenticationResponse> add(@RequestBody User user){
         return ResponseEntity.ok(userService.add(user));
     }
 

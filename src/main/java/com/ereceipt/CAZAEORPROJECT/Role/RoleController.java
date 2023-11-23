@@ -26,22 +26,22 @@ public class RoleController {
         return new ResponseEntity<>(roleService.createRole(role), CREATED);
     }
     @DeleteMapping("/delete/{id}")
-    public void createRole(@PathVariable("id") Long roleId){
+    public void createRole(@PathVariable("id") Integer roleId){
         roleService.deleteRole(roleId);
     }
     @PostMapping("/remove-all-users-from-role/{id}")
-    public Role removeAllUsersFromRole(@PathVariable("id") Long roleId){
+    public Role removeAllUsersFromRole(@PathVariable("id") Integer roleId){
         return roleService.removeAllUserFromRole(roleId);
     }
     @PostMapping("/remove-user-from-role")
-    public User removeUserFromRole(@RequestParam("userId")Long userId,
-                                   @RequestParam("roleId") Long roleId){
+    public User removeUserFromRole(@RequestParam("userId")Integer userId,
+                                   @RequestParam("roleId") Integer roleId){
         return roleService.removeUserFromRole(userId, roleId);
     }
 
     @PostMapping("/assign-user-to-role")
-    public User assignUserToRole(@RequestParam("userId")Long userId,
-                                 @RequestParam("roleId") Long roleId){
+    public User assignUserToRole(@RequestParam("userId")Integer userId,
+                                 @RequestParam("roleId") Integer roleId){
         return roleService.assignUerToRole(userId, roleId);
     }
 }

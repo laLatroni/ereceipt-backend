@@ -2,19 +2,17 @@ package com.ereceipt.CAZAEORPROJECT.ERECEIPT_DTO.EOR;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
 import com.ereceipt.CAZAEORPROJECT.CUSTOMER_TABLE.EOR.CUST_RECORDS;
-
 import com.ereceipt.CAZAEORPROJECT.MODE_OF_PAYMENT.ModeOfPayment;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -31,14 +29,14 @@ public class TRANSACTION {
     @NotEmpty(message = "Name may not be empty")
     @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
     private String names;
-    private String cus_email;
-    private String dates;
+    private String email;
+    private Date dates;
     private Integer modePayment;
     private String amount;
-
     private Integer cusNo;
-    @Temporal(TemporalType.DATE)
-    private Date time_Stamp;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp time_Stamp;
 
 
 

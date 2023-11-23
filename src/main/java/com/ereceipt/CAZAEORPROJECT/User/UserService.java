@@ -3,11 +3,18 @@ package com.ereceipt.CAZAEORPROJECT.User;
 ;
 import javax.transaction.Transactional;
 
+//import com.ereceipt.CAZAEORPROJECT.Authentication.AuthenticationResponse;
+import com.ereceipt.CAZAEORPROJECT.Authentication.AuthenticationResponse;
 import com.ereceipt.CAZAEORPROJECT.Role.Role;
 import com.ereceipt.CAZAEORPROJECT.Role.RoleRepository;
+import com.ereceipt.CAZAEORPROJECT.Token.TokenRepo;
+import com.ereceipt.CAZAEORPROJECT.Token.TokenType;
+import com.ereceipt.CAZAEORPROJECT.Token.Tokens;
 import com.ereceipt.CAZAEORPROJECT.exception.UserAlreadyExistsException;
 import com.ereceipt.CAZAEORPROJECT.exception.UserNotFoundException;
+import com.ereceipt.CAZAEORPROJECT.jwt.JWTService;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +30,13 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final JWTService jwtService;
+    private final TokenRepo tokenRepo;
+
 
 // add a user, if email is present throw exception
     @Override
-    public User add(User user) {
+    public AuthenticationResponse add(User user) {
         Optional<User> theUser = userRepository.findByEmail(user.getEmail());
         if (theUser.isPresent()) {
             throw new UserAlreadyExistsException("A user with " + user.getEmail() + " already exists");
@@ -39,7 +49,34 @@ public class UserService implements IUserService {
         } else {
             throw new RuntimeException("ROLE_USER NOT FOUND");
         }
-        return userRepository.save(user);
+        var saveUser = userRepository.save(user);
+        String jwtToken = jwtService.generateToken(user.getEmail());
+
+        saveUserToken(saveUser, jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+        private void revokeAllUserTokens(User user){
+        var validateUserTokens = tokenRepo.findAllValidTokenByUser(user.getId());
+        if(validateUserTokens.isEmpty())
+            return;
+        validateUserTokens.forEach(tokens ->{
+            tokens.setExpired(true);
+            tokens.setRevoked(true);
+                });
+            tokenRepo.saveAll(validateUserTokens);
+        }
+
+    private void saveUserToken(User user, String jwtToken) {
+        var token = Tokens.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.Bearer)
+                .revoked(false)
+                .expired(false)
+                .build();
+        tokenRepo.save(token);
     }
 
     // GET ALL DETAILS OF USERS
